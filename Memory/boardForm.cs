@@ -68,7 +68,10 @@ namespace Memory
         // TODO:  students should write this one
         private bool IsMatch(int index1, int index2)
         {
-            return true;
+            if (GetCardValue(index1) == GetCardValue(index2))
+                return true;
+            else
+                return false;
         }
 
         // This method fills each picture box with a filename
@@ -91,6 +94,20 @@ namespace Memory
         // TODO:  students should write this one
         private void ShuffleCards()
         {
+            
+            Random rand = new Random();
+            
+            for (int i = 1; i<=20; i++)
+            {
+                int randIndex;
+                string cardGrab;
+                string cardGrab2;
+                cardGrab = GetCardFilename(i);
+                randIndex = rand.Next(1, 21);
+                cardGrab2 = GetCardFilename(randIndex);
+                SetCardFilename(i, cardGrab2);
+                SetCardFilename(randIndex, cardGrab);
+            }
         }
 
         // This method loads (shows) an image in a picture box.  Assumes that filenames
@@ -112,55 +129,86 @@ namespace Memory
         // shows (loads) the backs of all of the cards
         private void LoadAllCardBacks()
         {
-
+            for (int i =1; i <=20;i++)
+            {
+                LoadCardBack(i);
+            }
         }
 
         // Hides a picture box
         private void HideCard(int i)
         {
-
+            PictureBox card = GetCard(i);
+            card.Visible = false;
         }
 
         private void HideAllCards()
         {
-
+            for (int i = 1; i <= 20; i++) 
+            {
+                PictureBox card = GetCard(i);
+                card.Visible = false;
+            }
         }
 
         // shows a picture box
         private void ShowCard(int i)
         {
-
+            PictureBox card = GetCard(i);
+            card.Visible = true;
+           
         }
 
         private void ShowAllCards()
         {
-
+            for (int i=1; i <=20; i++)
+            {
+                PictureBox card = GetCard(i);
+                card.Visible = true;
+            }
         }
 
         // disables a picture box
         private void DisableCard(int i)
         {
-
+            PictureBox card = GetCard(i);
+            card.Enabled = false;
         }
 
         private void DisableAllCards()
         {
-
+           for (int i =1; i <= 20;i++)
+            {
+                PictureBox card = GetCard(i);
+                card.Enabled = false;
+            }
         }
 
         private void EnableCard(int i)
         {
-
+            PictureBox card = GetCard(i);
+            card.Enabled = true;
         }
 
         private void EnableAllCards()
         {
-
+            for (int i = 1; i<= 20; i++)
+            {
+                PictureBox card = GetCard(i);
+                card.Enabled = true;
+            }
         }
     
         private void EnableAllVisibleCards()
         {
-
+            for (int i = 1; i <= 20; i++)
+            {
+                PictureBox card = GetCard(i);
+                if (card.Visible == true) 
+                {
+                    EnableCard(i);
+                }
+            }
         }
 
         #endregion
@@ -168,6 +216,13 @@ namespace Memory
         #region EventHandlers
         private void boardForm_Load(object sender, EventArgs e)
         {
+            FillCardFilenames();
+            ShuffleCards();
+            for (int i = 1; i <= 20; i++)
+            {
+                LoadCard(i);
+            }
+            LoadAllCardBacks();
             /* 
              * Fill the picture boxes with filenames
              * Shuffle the cards
@@ -182,7 +237,19 @@ namespace Memory
         {
             PictureBox card = (PictureBox)sender;
             int cardNumber = int.Parse(card.Name.Substring(4));
-
+            if (firstCardNumber == NOT_PICKED_YET)
+            {
+                firstCardNumber = cardNumber;
+                LoadCard(firstCardNumber);
+                DisableCard(firstCardNumber);
+            }
+            else
+            {
+                secondCardNumber = cardNumber;
+                LoadCard(secondCardNumber);
+                DisableAllCards();
+                flipTimer.Start();
+            }
             /* 
              * if the first card isn't picked yet
              *      save the first card index
@@ -199,6 +266,31 @@ namespace Memory
 
         private void flipTimer_Tick(object sender, EventArgs e)
         {
+            flipTimer.Stop();
+            if (IsMatch(firstCardNumber,secondCardNumber))
+            {
+                matches++;
+                HideCard(firstCardNumber);
+                HideCard(secondCardNumber);
+                firstCardNumber = NOT_PICKED_YET;
+                secondCardNumber = NOT_PICKED_YET;
+                if (matches == 10)
+                {
+                    MessageBox.Show("You're a Winner and an Amazing Person");
+                }
+                else
+                {
+                    EnableAllVisibleCards();
+                }
+            }
+            else
+            {
+                LoadCardBack(firstCardNumber);
+                LoadCardBack(secondCardNumber);
+                firstCardNumber = NOT_PICKED_YET;
+                secondCardNumber = NOT_PICKED_YET;
+                EnableAllVisibleCards();
+            }
             /*
              * stop the flip timer
              * if the first card and second card are a match
@@ -222,5 +314,23 @@ namespace Memory
              */
         }
         #endregion
+
+        private void closeButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void shuffleButton_Click(object sender, EventArgs e)
+        {
+            ShowAllCards();
+            EnableAllCards();
+            FillCardFilenames();
+            ShuffleCards();
+            for (int i = 1; i <= 20; i++)
+            {
+                LoadCard(i);
+            }
+            LoadAllCardBacks();
+        }
     }
 }

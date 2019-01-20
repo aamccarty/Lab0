@@ -51,6 +51,8 @@
             this.card2 = new System.Windows.Forms.PictureBox();
             this.card1 = new System.Windows.Forms.PictureBox();
             this.flipTimer = new System.Windows.Forms.Timer(this.components);
+            this.closeButton = new System.Windows.Forms.Button();
+            this.shuffleButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.card13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.card20)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.card12)).BeginInit();
@@ -298,11 +300,33 @@
             this.flipTimer.Interval = 2000;
             this.flipTimer.Tick += new System.EventHandler(this.flipTimer_Tick);
             // 
+            // closeButton
+            // 
+            this.closeButton.Location = new System.Drawing.Point(520, 288);
+            this.closeButton.Name = "closeButton";
+            this.closeButton.Size = new System.Drawing.Size(149, 23);
+            this.closeButton.TabIndex = 69;
+            this.closeButton.Text = "Close";
+            this.closeButton.UseVisualStyleBackColor = true;
+            this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
+            // 
+            // shuffleButton
+            // 
+            this.shuffleButton.Location = new System.Drawing.Point(520, 251);
+            this.shuffleButton.Name = "shuffleButton";
+            this.shuffleButton.Size = new System.Drawing.Size(149, 22);
+            this.shuffleButton.TabIndex = 70;
+            this.shuffleButton.Text = "Restart/Shuffle";
+            this.shuffleButton.UseVisualStyleBackColor = true;
+            this.shuffleButton.Click += new System.EventHandler(this.shuffleButton_Click);
+            // 
             // boardForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(728, 574);
+            this.Controls.Add(this.shuffleButton);
+            this.Controls.Add(this.closeButton);
             this.Controls.Add(this.card13);
             this.Controls.Add(this.card20);
             this.Controls.Add(this.card12);
@@ -373,6 +397,8 @@
         private System.Windows.Forms.PictureBox card2;
         private System.Windows.Forms.PictureBox card1;
         private System.Windows.Forms.Timer flipTimer;
+        private System.Windows.Forms.Button closeButton;
+        private System.Windows.Forms.Button shuffleButton;
     }
 }
 
